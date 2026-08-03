@@ -1,0 +1,35 @@
+-- kamus_tunjung.db (SQL script to create and populate SQLite database)
+-- This file is a SQL dump that creates the schema for the kamus and
+-- instructs how to import CSV data included in this repository.
+
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+
+-- Table for Tonyooi -> Indonesia pairs
+CREATE TABLE IF NOT EXISTS tonyooi_to_indonesia (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  tonyooi TEXT NOT NULL,
+  indonesia TEXT
+);
+
+-- Table for Indonesia -> Tonyooi pairs
+CREATE TABLE IF NOT EXISTS indonesia_to_tonyooi (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  indonesia TEXT NOT NULL,
+  tonyooi TEXT
+);
+
+-- Note: rather than embedding many INSERT statements here, import the CSV files
+-- included in the repository using the sqlite3 CLI. Example:
+--  $ sqlite3 kamus_tunjung.db
+--  sqlite> .mode csv
+--  sqlite> .import tonyoooi_to_indonesia.csv tonyooi_to_indonesia
+--  sqlite> .import indonesia_to_tonyooi.csv indonesia_to_tonyooi
+--  sqlite> .schema
+--  sqlite> .quit
+
+COMMIT;
+
+-- Optional example insert (uncomment to use):
+-- INSERT INTO tonyooi_to_indonesia(tonyooi, indonesia) VALUES('Ampaap','Cahaya, sinar, terang');
+-- INSERT INTO indonesia_to_tonyooi(indonesia, tonyooi) VALUES('Akan, hendak','Antakng');
