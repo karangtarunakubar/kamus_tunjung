@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kamus Tunjung — Penerjemah</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1>Kamus Tunjung (Tonyooi)</h1>
+    <p class="tagline">Penerjemah dua arah — Tonyooi ↔ Indonesia (offline via CSV)</p>
+  </header>
+
+  <main class="container">
+    <div class="controls">
+      <div class="direction">
+        <label>
+          <input type="radio" name="dir" value="t2i" checked>
+          Tonyooi → Indonesia
+        </label>
+        <label>
+          <input type="radio" name="dir" value="i2t">
+          Indonesia → Tonyooi
+        </label>
+      </div>
+
+      <div class="search-row">
+        <input id="query" type="search" placeholder="Ketik kata, atau mulai ketik untuk saran..." autocomplete="off">
+        <button id="clear">Bersihkan</button>
+      </div>
+
+      <div class="options">
+        <label><input type="checkbox" id="fuzzy"> Pencarian fuzzy (substring)</label>
+        <label><input type="checkbox" id="caseSensitive"> Case sensitive</label>
+      </div>
+    </div>
+
+    <section id="results" class="results">
+      <p class="hint">Memuat kamus...</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>Data: kamus_tunjung — dibuat untuk pelestarian bahasa Tunjung (Tonyooi).</small>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
