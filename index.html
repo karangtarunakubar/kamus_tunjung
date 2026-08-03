@@ -1,50 +1,362 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Kamus Tunjung — Penerjemah</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="title">Kamus Tunjung</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-pap3x9z+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="assets/style.css">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg-color: #f3f4f6;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .translator-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 700px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .card-header {
+      padding: 20px 24px;
+      background: #fafafa;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .card-subtitle {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .language-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .lang-label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 0.95rem;
+      flex: 1;
+      text-align: center;
+    }
+
+    .swap-btn {
+      background: var(--bg-color);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      color: var(--text-main);
+    }
+
+    .swap-btn:hover {
+      background: #e5e7eb;
+      transform: rotate(180deg);
+    }
+
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    @media (max-width: 640px) {
+      .card-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .text-box-container {
+      position: relative;
+      padding: 16px;
+    }
+
+    .text-box-container:first-child {
+      border-right: 1px solid var(--border-color);
+    }
+
+    @media (max-width: 640px) {
+      .text-box-container:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+    }
+
+    textarea {
+      width: 100%;
+      height: 160px;
+      border: none;
+      outline: none;
+      resize: none;
+      font-size: 1rem;
+      color: var(--text-main);
+      background: transparent;
+    }
+
+    textarea::placeholder {
+      color: #9ca3af;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 8px;
+    }
+
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .icon-btn:hover {
+      background: var(--bg-color);
+      color: var(--text-main);
+    }
+
+    .card-footer {
+      padding: 12px 24px;
+      background: #fafafa;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <h1>Kamus Tunjung (Tonyooi)</h1>
-    <p class="tagline">Penerjemah dua arah — Tonyooi ↔ Indonesia (offline via CSV)</p>
-  </header>
 
-  <main class="container">
-    <div class="controls">
-      <div class="direction">
-        <label>
-          <input type="radio" name="dir" value="t2i" checked>
-          Tonyooi → Indonesia
-        </label>
-        <label>
-          <input type="radio" name="dir" value="i2t">
-          Indonesia → Tonyooi
-        </label>
+  <div class="translator-card">
+    <div class="card-header">
+      <div class="card-title">Tonyooi Translator</div>
+      <div class="card-subtitle">Fast lookup & real-time word translation</div>
+    </div>
+
+    <div class="language-bar">
+      <span class="lang-label" id="srcLang">Indonesia</span>
+      <button class="swap-btn" id="swapBtn" title="Swap Languages">⇄</button>
+      <span class="lang-label" id="targetLang">Tonyooi</span>
+    </div>
+
+    <div class="card-body">
+      <div class="text-box-container">
+        <textarea id="sourceText" placeholder="Ketik teks di sini..."></textarea>
+        <div class="actions">
+          <button class="icon-btn" id="clearBtn">✕ Clear</button>
+        </div>
       </div>
 
-      <div class="search-row">
-        <input id="query" type="search" placeholder="Ketik kata, atau mulai ketik untuk saran..." autocomplete="off">
-        <button id="clear">Bersihkan</button>
-      </div>
-
-      <div class="options">
-        <label><input type="checkbox" id="fuzzy"> Pencarian fuzzy (substring)</label>
-        <label><input type="checkbox" id="caseSensitive"> Case sensitive</label>
+      <div class="text-box-container">
+        <textarea id="targetText" placeholder="Hasil terjemahan..." readonly></textarea>
+        <div class="actions">
+          <button class="icon-btn" id="copyBtn">📋 Copy</button>
+        </div>
       </div>
     </div>
 
-    <section id="results" class="results">
-      <p class="hint">Memuat kamus...</p>
-    </section>
-  </main>
+    <div class="card-footer">
+     <a href="https://github.com/karangtarunakubar/kamus_tunjung" target="_blank">
+        <p class="title">Powered by</p></a>
+        <i id="author" class="fa-solid fa-user">Design</i> <span id="authorName">Edo Erpani</span>
+    </div>
+  </div>
 
-  <footer class="site-footer">
-    <small>Data: kamus_tunjung — dibuat untuk pelestarian bahasa Tunjung (Tonyooi).</small>
-  </footer>
+  <script>
+    // Dictionary Data built directly from input dataset
+    const dictionary = [
+      ["akuq", "aku"], ["Ampaap", "Cahaya"], ["Amput", "Ikut"],
+      ["Ampiitn", "Alas"], ["Ampuun", "Bersama dengan"], ["Ancar", "Tari"],
+      ["Ancaatn", "Guna-guna, pelet"], ["Anci", "Tusuk"], ["Ancur", "Moncong"],
+      ["Angka", "Kira-kira, mungkin"], ["Angkai", "Bangkai"], ["Angkuui", "Rendah hati"],
+      ["Antaakng", "Guci besar"], ["Antaaq", "Banyak"], ["Antakng", "Akan, hendak"],
+      ["Anteek", "Sebabnya"], ["Antung", "Arah, letak, alamat"], ["Aur", "Sibuk"],
+      ["Bancukng", "Bensin"], ["Bangkukng", "Bagian atas dari moncong hewan"],
+      ["Bantir", "Masa akil balik"], ["Bantuut", "Tidak meledak/meletus"],
+      ["Baon", "Bau, aroma"], ["Baoq", "Bau, aroma"], ["Begontekng", "Bergantung"],
+      ["Beldookng", "Parang"], ["Belempai", "Tidak memakai baju"],
+      ["Belengkenat", "Makanan yang tersangkut di leher"], ["Belengkoot", "Bengkok"],
+      ["Beluntakng", "Tiang patung untuk mengikat hewan kurban"], ["Beniaq", "Burung elang"],
+      ["Benua", "Kampung"], ["Beor", "Nama jenis cendawan/jamur"],
+      ["Bepempaapm", "Menutup kemaluan dengan telapak atau jari tangan"],
+      ["Berdoeeq", "Rapuh tentang tubuh"], ["Berempai", "Jalan berduaan"],
+      ["Berempuh", "Saling berangkulan"], ["Bersinak", "Beracun"], ["Bintakng", "Bintang"],
+      ["Bion", "Daging yang masih segar"], ["Bioh", "Baru saja"], ["Bloak", "Jenis seni suara"],
+      ["Buak", "Burung hantu"], ["Bueh", "Satu, tunggal"], ["Buncaarbaih", "Berserakan"],
+      ["Buo", "Hujan terus-menerus"], ["Buookng", "Menyebutkan atau menanyakan berulang kali"],
+      ["Caor", "Jenis sarung untuk perempuan"], ["Cecuaq", "Gagap"], ["Coang", "Baskom"],
+      ["Coeq", "Cobek"], ["Diapm", "Tinggal"], ["Encuutn", "Asap"], ["Encoq", "Jauh"],
+      ["Engkolakng", "Tempat berteduh"], ["Gae", "Miliknya"], ["Gaer", "Khawatir, cemas"],
+      ["Galikngganai", "Tidur-tiduran"], ["Goar-goer", "Longgar"], ["Huit", "Belantik"],
+      ["Iatn", "Sungai"], ["Incuk", "Tukul"], ["Jait", "Hampir"], ["Jaut", "Kabur"],
+      ["Jautn", "Awan"], ["Jemiaq", "Rumbia"], ["Jie", "Sejenis guci"], ["Kae", "Memang"],
+      ["Kaeet", "Selalu, biasa"], ["Kao", "Kamu, engkau"], ["Kaot", "Sendok, gayung"],
+      ["Kauuk", "Jenis kadal yang besar"], ["Kear-keor", "Bergoyang-goyang"],
+      ["Keak-keok", "Berbelok-belok"], ["Keaskeko", "Sudah dikerjakan"],
+      ["Kekuit", "Terangkat pada salah satu ujung"], ["Kelikiu", "Sayap"],
+      ["Keliuq", "Keracunan"], ["Kelauq", "Jenis buah asam hutan"],
+      ["Kelengkikng", "Lumbung padi"], ["Keluatn", "Tertimpa"], ["Kerkak", "Ketiak"],
+      ["Kertak", "Kacang panjang"], ["Kertikng", "Kering, garing, renyah"],
+      ["Kerwilik", "Kincir angin"], ["Kias", "Sapu"], ["Kiriu", "Pinggir"],
+      ["Koih", "Gesit, rajin"], ["Kuini", "Nama jenis mangga"], ["Lahtala", "Yang Maha Esa"],
+      ["Laih", "Ikan lais"], ["Laitn", "Lain"], ["Laoq", "Lapar"], ["Lea", "Bosan"],
+      ["Leeot", "Panjang"], ["Lehuatn", "Bagian depan"], ["Leoq", "Sperma"],
+      ["Leoon", "Sperma"], ["Lesoer", "Menjuntai ke bawah"], ["Loah", "Mual"],
+      ["Loaaq", "Lemak"], ["Loakng", "Lubang tugalan"], ["Loan", "Lemak"],
+      ["Longeeu", "Tinggi"], ["Loseeu", "Melebihi batas"], ["Luuok", "Lubang"],
+      ["nyama", "apa"], ["Mancak", "Bisul"], ["Mangkasi", "Rendah hati"],
+      ["Meat", "Menindih"], ["Mensigit", "Masjid"], ["Mentiuuq", "Bunuh diri"],
+      ["Mentaih", "Susah, sengsara, menderita"], ["Meraiq", "Melerai"], ["Mio", "Sadar, siuman"],
+      ["Mioh", "Bersih"], ["Neaau", "Melihat"], ["Nerka", "Terka"],
+      ["Nerdas", "Mematikan di tempatnya"], ["Nerdaatn", "Berterus terang"],
+      ["Ngeaak", "Membuka"], ["Ngenjijiq", "Menyengir"], ["Ngerkokng", "Berjongkok"],
+      ["Ngeteu", "Mencelupkan"], ["Nguih", "Menghajar"], ["Nguit", "Mengungkit, menjungkit"],
+      ["Ngureeu", "Menggerakkan"], ["Pelgaq mai", "Leluhur"], ["Perdah", "Tangkai beliung"],
+      ["Permaq", "Hitam"], ["Pucoou", "Mencelupkan"], ["Sangkur", "Cangkul"],
+      ["Seloar", "Celana"], ["Sermiq", "Emper"], ["Setrongkeng", "Lampu pompa angin"],
+      ["Tengemperek", "Diomeli"], ["Uok", "Nasi yang bercampur dengan sayur berkuah"],
+      ["Mulaaq", "Mulai, memulai"], ["Katiiq", "Tertawa"], ["Nangih", "Menangis"],
+      ["Tidur", "Baring, tidur"], ["Kuman", "Makan"], ["Mirooq", "Minum"],
+      ["Bejalan", "Berjalan"], ["teliuq", "Berlari"], ["Nungkat", "Memanjat"],
+      ["Tepatiiq", "Melompat"], ["Nulis", "Menulis"], ["Maca", "Membaca"],
+      ["Ndingit", "Mendengar"], ["Tulah", "Membantu, menolong"], ["Ngarat", "Memotong"],
+      ["Nyulaq", "Menanam"], ["Muat", "Membuat"], ["Ngeju", "Memberi"],
+      ["Nyambut", "Menerima"], ["Betiup", "Bicara, berbicara"], ["Nyangkut", "Membawa"],
+      ["Guring", "Baring, merebahkan diri"], ["Tekaatn", "Datang, tiba"],
+      ["Mulaat", "Ganteng, tampan"], ["Amooq", "Cantik"], ["Gulaat", "Manis"],
+      ["Pait", "Pahit"], ["Sireet", "Asin"], ["Kelauu", "Asam"], ["Legeeu", "Hambar, tawar"],
+      ["Poat", "Panas"], ["Gereem", "Dingin"], ["Rayat", "Besar"], ["Ikiit", "Kecil"],
+      ["Bakaat", "Pendek"], ["Mooq", "Jauh"], ["Dapeet", "Dekat"], ["Latak", "Kotor"],
+      ["Pegaale", "Malas"], ["Basiit", "Berani"], ["Gegaat", "Keras"],
+      ["Lomeet", "Lembut, empuk"], ["Akaat", "Cepat"], ["Lekeet", "Lambat"],
+      ["Aku", "Aku, saya"], ["Ie", "Dia (laki-laki / peempuan)"], ["Kami", "Kami"],
+      ["Keti", "Kalian"], ["Er", "Mereka"], ["Uooq", "Orang"], ["Uooqrayat", "Orang tua"],
+      ["Uooq ikiit", "Anak-anak"], ["Amai", "Ayah, bapak"], ["Inaq", "Ibu, mama"],
+      ["Akaq", "Kakak"], ["Atak", "Adik"], ["Tetek", "Kakek"], ["Nnek", "Nenek"],
+      ["Aqaq", "Paman"], ["Ibuq", "Bibi"], ["Epot", "Cucu"], ["Kula", "Keluarga, kerabat"],
+      ["Sawa", "Suami"], ["Sungn", "Istri"]
+    ];
 
+    let mode = "id2ty"; // 'id2ty' = Indonesia -> Tonyooi, 'ty2id' = Tonyooi -> Indonesia
+
+    const sourceText = document.getElementById("sourceText");
+    const targetText = document.getElementById("targetText");
+    const swapBtn = document.getElementById("swapBtn");
+    const srcLang = document.getElementById("srcLang");
+    const targetLang = document.getElementById("targetLang");
+    const clearBtn = document.getElementById("clearBtn");
+    const copyBtn = document.getElementById("copyBtn");
+
+    function translate() {
+      const input = sourceText.value.trim().toLowerCase();
+      if (!input) {
+        targetText.value = "";
+        return;
+      }
+
+      const words = input.split(/\s+/);
+      const translatedWords = words.map(word => {
+        const cleanWord = word.replace(/[^\w\s]/gi, '');
+        let match = null;
+
+        for (const [ty, id] of dictionary) {
+          if (mode === "ty2id") {
+            if (ty.toLowerCase() === cleanWord) {
+              match = id;
+              break;
+            }
+          } else {
+            const idList = id.toLowerCase().split(",").map(s => s.trim());
+            if (idList.includes(cleanWord)) {
+              match = ty;
+              break;
+            }
+          }
+        }
+        return match ? match : word;
+      });
+
+      targetText.value = translatedWords.join(" ");
+    }
+
+    swapBtn.addEventListener("click", () => {
+      mode = mode === "id2ty" ? "ty2id" : "id2ty";
+      if (mode === "id2ty") {
+        srcLang.textContent = "Indonesia";
+        targetLang.textContent = "Tonyooi";
+      } else {
+        srcLang.textContent = "Tonyooi";
+        targetLang.textContent = "Indonesia";
+      }
+      sourceText.value = targetText.value;
+      translate();
+    });
+
+    sourceText.addEventListener("input", translate);
+
+    clearBtn.addEventListener("click", () => {
+      sourceText.value = "";
+      targetText.value = "";
+    });
+
+    copyBtn.addEventListener("click", () => {
+      if (targetText.value) {
+        navigator.clipboard.writeText(targetText.value);
+        copyBtn.textContent = "✓ Copied!";
+        setTimeout(() => { copyBtn.textContent = "📋 Copy"; }, 1500);
+      }
+    });
+  </script>
   <script src="assets/app.js"></script>
 </body>
 </html>
