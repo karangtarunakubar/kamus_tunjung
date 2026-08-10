@@ -1,4 +1,4 @@
-# Kamus Tunjung (Tonyooi)
+# Kamus Tunjung
 
 Proyek dokumentasi dan pelestarian bahasa Tonyooi (Tunjung) — kamus dua arah dan panduan singkat penggunaan.
 
