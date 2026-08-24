@@ -33,3 +33,75 @@ COMMIT;
 -- Optional example insert (uncomment to use):
 -- INSERT INTO tonyooi_to_indonesia(tonyooi, indonesia) VALUES('Ampaap','Cahaya, sinar, terang');
 -- INSERT INTO indonesia_to_tonyooi(indonesia, tonyooi) VALUES('Akan, hendak','Antakng');
+
+-- 1: Relational Database (SQL - PostgreSQL / MySQL / SQLite)
+-- Main Terms Table
+CREATE TABLE words (
+    id SERIAL PRIMARY KEY,
+    word VARCHAR(255) NOT NULL UNIQUE,
+    phonetic VARCHAR(100),
+    language VARCHAR(10) DEFAULT 'en',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Meanings / Definitions Table (1 Word -> Multiple Meanings)
+CREATE TABLE definitions (
+    id SERIAL PRIMARY KEY,
+    word_id INT REFERENCES words(id) ON DELETE CASCADE,
+    part_of_speech VARCHAR(50), -- e.g., noun, verb, adjective
+    definition TEXT NOT NULL,
+    example TEXT
+);
+
+-- Synonyms & Antonyms
+CREATE TABLE word_relations (
+    id SERIAL PRIMARY KEY,
+    word_id INT REFERENCES words(id) ON DELETE CASCADE,
+    related_word_id INT REFERENCES words(id) ON DELETE CASCADE,
+    relation_type VARCHAR(20) CHECK (relation_type IN ('synonym', 'antonym'))
+);
+
+-- 2: Translation / Bilingual Dictionary Database (e.g., Tunjung ↔ Indonesian)
+
+CREATE TABLE source_words (
+    id SERIAL PRIMARY KEY,
+    word VARCHAR(255) NOT NULL,
+    language_code VARCHAR(10) NOT NULL, -- e.g., 'tjo' (Tunjung)
+    part_of_speech VARCHAR(50),
+    phonetic VARCHAR(100)
+);
+
+CREATE TABLE target_translations (
+    id SERIAL PRIMARY KEY,
+    source_word_id INT REFERENCES source_words(id) ON DELETE CASCADE,
+    translation VARCHAR(255) NOT NULL,
+    target_language VARCHAR(10) NOT NULL, -- e.g., 'id' (Indonesian)
+    definition_notes TEXT,
+    context_example TEXT
+);
+
+-- 3: Document Database (MongoDB / JSON)
+```json
+{
+  "_id": "64a1b2c3d4e5f6a7b8c9d0e1",
+  "word": "kuman",
+  "language": "id",
+  "phonetic": "/ku.man/",
+  "entries": [
+    {
+      "partOfSpeech": "adjective",
+      "definitions": [
+        {
+          "definition": "Berhubungan kata kerja; makan; lazim dipakai.",
+          "examples": [
+            "Penggunaan kata-kata makan dalam kata-kata sehari ketika orang mengalami lapar ."
+          ]
+        }
+      ],
+      "synonyms": ["makan"]
+    }
+  ]
+}
+```
+
+
